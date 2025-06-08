@@ -12,6 +12,8 @@ using Shared.Data;
 using Shared.Data.Seed;
 using Catalog.Data.Seed;
 using Shared.Data.Interceptors;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using System.Reflection;
 
 namespace Catalog
 {
@@ -22,11 +24,20 @@ namespace Catalog
         {
             // Add Services to the container
 
+            services.AddMediatR(config =>
+            {
+                config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            });
+
+
             var connectionstring = configuration.GetConnectionString("Database");
 
-            services.AddDbContext<CatalogDbContext>(options =>
+            services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+            services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+
+            services.AddDbContext<CatalogDbContext>((sp,options) =>
             {
-                options.AddInterceptors(new AuditableEntityInterceptor());
+                options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
                 options.UseNpgsql(connectionstring);
             });
 
