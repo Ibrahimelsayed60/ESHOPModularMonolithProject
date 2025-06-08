@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Data;
 using Shared.Data.Seed;
 using Catalog.Data.Seed;
+using Shared.Data.Interceptors;
 
 namespace Catalog
 {
@@ -25,6 +26,7 @@ namespace Catalog
 
             services.AddDbContext<CatalogDbContext>(options =>
             {
+                options.AddInterceptors(new AuditableEntityInterceptor());
                 options.UseNpgsql(connectionstring);
             });
 
