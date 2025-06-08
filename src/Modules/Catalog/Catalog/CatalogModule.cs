@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Builder;
 using Catalog.Data;
 using Microsoft.EntityFrameworkCore;
 using Shared.Data;
+using Shared.Data.Seed;
+using Catalog.Data.Seed;
 
 namespace Catalog
 {
@@ -25,6 +27,8 @@ namespace Catalog
             {
                 options.UseNpgsql(connectionstring);
             });
+
+            services.AddScoped<IDataSeeder, CatalogDataSeeder>();
 
             return services;
         }
