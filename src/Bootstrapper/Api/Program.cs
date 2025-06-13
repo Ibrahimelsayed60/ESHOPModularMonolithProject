@@ -1,5 +1,6 @@
 
 using Carter;
+using Serilog;
 using Shared.Exceptions.Handler;
 using Shared.Extensions;
 
@@ -10,6 +11,9 @@ namespace Api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Host.UseSerilog((context, config) =>
+                config.ReadFrom.Configuration(context.Configuration));
 
             // Add Services to Container
 
@@ -37,12 +41,16 @@ namespace Api
 
             app.MapCarter();
 
+            app.UseSerilogRequestLogging();
+
+            app.UseExceptionHandler(options => { });
+
             app
                 .UseCatalogModule()
                 .UseBasketModule()
                 .UseOrderingModule();
 
-            app.UseExceptionHandler(options => { });
+            
 
             app.Run();
         }

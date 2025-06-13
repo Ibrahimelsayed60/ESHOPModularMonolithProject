@@ -30,9 +30,9 @@ namespace Catalog.Products.Features.CreateProduct
         }
     }
 
-    public class CreateProductHandler(CatalogDbContext dbContext, 
-            /*IValidator<CreateProductCommand> validator,*/
-            ILogger<CreateProductHandler> logger) : 
+    public class CreateProductHandler(CatalogDbContext dbContext
+            /*IValidator<CreateProductCommand> validator,
+            ILogger<CreateProductHandler> logger*/) : 
         ICommandHandler<CreateProductCommand, CreateProductResult>
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
@@ -52,7 +52,7 @@ namespace Catalog.Products.Features.CreateProduct
             #endregion
 
             // logging part
-            logger.LogInformation("CreateProductHandler.Handle called with {@Command}", command);
+            //logger.LogInformation("CreateProductHandler.Handle called with {@Command}", command);
 
             // actual logic
             var product = CreateNewProduct(command.Product);
