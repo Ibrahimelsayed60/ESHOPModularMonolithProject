@@ -1,4 +1,7 @@
 
+using Carter;
+using Shared.Extensions;
+
 namespace Api
 {
     public class Program
@@ -8,6 +11,17 @@ namespace Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add Services to Container
+
+            //builder.Services.AddCarter(configurator: config =>
+            //{
+            //    var catalogModules = typeof(CatalogModule).Assembly.GetTypes()
+            //        .Where(t => t.IsAssignableTo(typeof(ICarterModule))).ToArray();
+
+            //    config.WithModules(catalogModules);
+            //});
+
+            builder.Services.AddCarterWithAssemblies(typeof(CatalogModule).Assembly);
+
             builder.Services
                 .AddCatalogModule(builder.Configuration)
                 .AddBasketModule(builder.Configuration)
@@ -16,6 +30,8 @@ namespace Api
             var app = builder.Build();
 
             //app.MapGet("/", () => "Hello World!");
+
+            app.MapCarter();
 
             app
                 .UseCatalogModule()

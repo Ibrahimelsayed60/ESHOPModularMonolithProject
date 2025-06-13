@@ -20,7 +20,7 @@ namespace Catalog.Products.Features.GetProductByCategory
     {
         public async Task<GetProductByCategoryResult> Handle(GetProductByCategoryQuery query, CancellationToken cancellationToken)
         {
-            var products = dbContext.Products.AsNoTracking().Where(p => p.Category.Contains(query.Category)).OrderBy(p => p.Name).ToListAsync(cancellationToken);
+            var products = await dbContext.Products.AsNoTracking().Where(p => p.Category.Contains(query.Category)).OrderBy(p => p.Name).ToListAsync(cancellationToken);
 
             var productDtos = products.Adapt<List<ProductDto>>();
 
