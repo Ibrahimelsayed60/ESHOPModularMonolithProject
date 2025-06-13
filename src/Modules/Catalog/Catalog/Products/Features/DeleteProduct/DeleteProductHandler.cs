@@ -1,4 +1,6 @@
 ﻿using Catalog.Data;
+using Catalog.Products.Exceptions;
+using FluentValidation;
 using MediatR;
 using Shared.CQRS;
 using System;
@@ -15,6 +17,15 @@ namespace Catalog.Products.Features.DeleteProduct
 
     public record DeleteProductResult(bool IsSuccess);
 
+    public class DeleteProductCommandValidator : AbstractValidator<DeleteProductCommand>
+    {
+        public DeleteProductCommandValidator()
+        {
+            RuleFor(x => x.ProductId).NotEmpty().WithMessage("Product Id is required");
+        }
+    }
+
+
     public class DeleteProductHandler(CatalogDbContext dbContext) : ICommandHandler<DeleteProductCommand, DeleteProductResult>
     {
         public async Task<DeleteProductResult> Handle(DeleteProductCommand command, CancellationToken cancellationToken)
@@ -23,7 +34,7 @@ namespace Catalog.Products.Features.DeleteProduct
 
             if (product is null)
             {
-                throw new Exception($"Product not found: {command.ProductId}");
+                throw new ProductNotFoundException(command.ProductId);
             }
 
             dbContext.Products.Remove(product);

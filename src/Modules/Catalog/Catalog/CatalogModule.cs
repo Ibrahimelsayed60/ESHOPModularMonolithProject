@@ -14,6 +14,8 @@ using Catalog.Data.Seed;
 using Shared.Data.Interceptors;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Reflection;
+using FluentValidation;
+using Shared.Behaviors;
 
 namespace Catalog
 {
@@ -27,7 +29,11 @@ namespace Catalog
             services.AddMediatR(config =>
             {
                 config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+                config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                //config.AddOpenBehavior(typeof(LoggingBehavior<,>));
             });
+
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 
             var connectionstring = configuration.GetConnectionString("Database");

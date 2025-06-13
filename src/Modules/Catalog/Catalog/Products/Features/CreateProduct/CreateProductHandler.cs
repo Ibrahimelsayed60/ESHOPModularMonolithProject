@@ -1,7 +1,9 @@
 ﻿using Catalog.Data;
 using Catalog.Products.Dtos;
 using Catalog.Products.Models;
+using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Shared.CQRS;
 using System;
 using System.Collections.Generic;
@@ -17,7 +19,21 @@ namespace Catalog.Products.Features.CreateProduct
 
     public record CreateProductResult(Guid Id);
 
-    public class CreateProductHandler(CatalogDbContext dbContext) : ICommandHandler<CreateProductCommand, CreateProductResult>
+    public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+    {
+        public CreateProductCommandValidator()
+        {
+            RuleFor(x => x.Product.Name).NotEmpty().WithMessage("Name is required");
+            RuleFor(x => x.Product.Category).NotEmpty().WithMessage("Category is required");
+            RuleFor(x => x.Product.ImageFile).NotEmpty().WithMessage("ImageFile is required");
+            RuleFor(x => x.Product.Price).GreaterThan(0).WithMessage("Price must be greater than 0");
+        }
+    }
+
+    public class CreateProductHandler(CatalogDbContext dbContext, 
+            /*IValidator<CreateProductCommand> validator,*/
+            ILogger<CreateProductHandler> logger) : 
+        ICommandHandler<CreateProductCommand, CreateProductResult>
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
@@ -25,6 +41,20 @@ namespace Catalog.Products.Features.CreateProduct
             // save to database
             // return result
 
+            #region Validation part
+            //Validation part
+            //var result = await validator.ValidateAsync(command, cancellationToken);
+            //var errors = result.Errors.Select(e => e.ErrorMessage).ToList();
+            //if (errors.Any())
+            //{
+            //    throw new ValidationException(errors.FirstOrDefault());
+            //} 
+            #endregion
+
+            // logging part
+            logger.LogInformation("CreateProductHandler.Handle called with {@Command}", command);
+
+            // actual logic
             var product = CreateNewProduct(command.Product);
             dbContext.Products.Add(product);
             await dbContext.SaveChangesAsync(cancellationToken);

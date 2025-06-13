@@ -1,5 +1,6 @@
 
 using Carter;
+using Shared.Exceptions.Handler;
 using Shared.Extensions;
 
 namespace Api
@@ -27,6 +28,9 @@ namespace Api
                 .AddBasketModule(builder.Configuration)
                 .AddOrderingModule(builder.Configuration);
 
+            builder.Services
+                .AddExceptionHandler<CustomExceptionHandler>();
+
             var app = builder.Build();
 
             //app.MapGet("/", () => "Hello World!");
@@ -37,6 +41,8 @@ namespace Api
                 .UseCatalogModule()
                 .UseBasketModule()
                 .UseOrderingModule();
+
+            app.UseExceptionHandler(options => { });
 
             app.Run();
         }
