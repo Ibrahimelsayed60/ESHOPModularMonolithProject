@@ -25,7 +25,15 @@ namespace Api
             //    config.WithModules(catalogModules);
             //});
 
-            builder.Services.AddCarterWithAssemblies(typeof(CatalogModule).Assembly);
+            //common services: carter, mediatr, fluentvalidation
+            var catalogAssembly = typeof(CatalogModule).Assembly;
+            var basketAssembly = typeof(BasketModule).Assembly;
+
+            builder.Services
+                .AddCarterWithAssemblies(catalogAssembly, basketAssembly);
+
+            builder.Services
+                .AddMediatRWithAssemblies(catalogAssembly, basketAssembly);
 
             builder.Services
                 .AddCatalogModule(builder.Configuration)

@@ -26,14 +26,14 @@ namespace Catalog
         {
             // Add Services to the container
 
-            services.AddMediatR(config =>
-            {
-                config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-                config.AddOpenBehavior(typeof(ValidationBehavior<,>));
-                config.AddOpenBehavior(typeof(LoggingBehavior<,>));
-            });
+            //services.AddMediatR(config =>
+            //{
+            //    config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            //    config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            //    config.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            //});
 
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            //services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 
             var connectionstring = configuration.GetConnectionString("Database");
