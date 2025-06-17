@@ -1,16 +1,11 @@
 ﻿using Carter;
-using Catalog.Products.Dtos;
+using Catalog.Contracts.Products.Dtos;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Shared.Pagination;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Catalog.Products.Features.GetProducts
 {

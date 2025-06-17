@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared.CQRS
+namespace Shared.Contracts.CQRS
 {
 
-    public interface ICommand: ICommand<Unit>
+    public interface ICommand : ICommand<Unit>
     {
 
     }
 
-    public interface ICommand<out TResponse>: IRequest<TResponse>
+    public interface ICommand<out TResponse> : IRequest<TResponse>
     {
     }
 }

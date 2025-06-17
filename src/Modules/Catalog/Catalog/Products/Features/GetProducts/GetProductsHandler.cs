@@ -1,15 +1,9 @@
 ﻿using Catalog.Data;
-using Catalog.Products.Dtos;
-using Catalog.Products.Models;
 using Microsoft.EntityFrameworkCore;
-using Shared.CQRS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Mapster;
 using Shared.Pagination;
+using Shared.Contracts.CQRS;
+using Catalog.Contracts.Products.Dtos;
 
 
 namespace Catalog.Products.Features.GetProducts

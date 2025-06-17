@@ -1,15 +1,7 @@
 ﻿using Basket.Basket.Dtos;
-using Basket.Basket.Exceptions;
-using Basket.Data;
 using Basket.Data.Repository;
 using Mapster;
-using Microsoft.EntityFrameworkCore;
-using Shared.CQRS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Shared.Contracts.CQRS;
 
 namespace Basket.Basket.Features.GetBasket
 {

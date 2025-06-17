@@ -1,16 +1,8 @@
-﻿using Catalog.Data;
-using Catalog.Products.Dtos;
+﻿using Catalog.Contracts.Products.Dtos;
+using Catalog.Data;
 using Catalog.Products.Models;
 using FluentValidation;
-using MediatR;
-using Microsoft.Extensions.Logging;
-using Shared.CQRS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using Shared.Contracts.CQRS;
 
 namespace Catalog.Products.Features.CreateProduct
 {

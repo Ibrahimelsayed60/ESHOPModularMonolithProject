@@ -1,15 +1,10 @@
 ﻿using Basket.Basket.Dtos;
-using Basket.Basket.Exceptions;
-using Basket.Data;
 using Basket.Data.Repository;
+using Catalog.Contracts.Products.Features.GetProductById;
 using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shared.CQRS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Shared.Contracts.CQRS;
 
 namespace Basket.Basket.Features.AddItemIntoBasket
 {
@@ -26,7 +21,7 @@ namespace Basket.Basket.Features.AddItemIntoBasket
         }
     }
 
-    internal class AddItemIntoBasketHandler(IBasketRepository repository)
+    internal class AddItemIntoBasketHandler(IBasketRepository repository, ISender sender)
     : ICommandHandler<AddItemIntoBasketCommand, AddItemIntoBasketResult>
     {
         public async Task<AddItemIntoBasketResult> Handle(AddItemIntoBasketCommand command, CancellationToken cancellationToken)
@@ -34,12 +29,17 @@ namespace Basket.Basket.Features.AddItemIntoBasket
             // Add shopping cart item into shopping cart
             var shoppingCart = await repository.GetBasket(command.UserName, false, cancellationToken);
 
+            var result = await sender.Send(
+            new GetProductByIdQuery(command.ShoppingCartItem.ProductId));
+
             shoppingCart.AddItem(
-                    command.ShoppingCartItem.ProductId,
-                    command.ShoppingCartItem.Quantity,
-                    command.ShoppingCartItem.Color,
-                    command.ShoppingCartItem.Price,
-                    command.ShoppingCartItem.ProductName);
+                command.ShoppingCartItem.ProductId,
+                command.ShoppingCartItem.Quantity,
+                command.ShoppingCartItem.Color,
+                result.Product.Price,
+                result.Product.Name);
+            //command.ShoppingCartItem.Price,
+            //command.ShoppingCartItem.ProductName);
 
             await repository.SaveChangesAsync(command.UserName, cancellationToken);
 
