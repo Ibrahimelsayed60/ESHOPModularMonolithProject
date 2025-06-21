@@ -44,7 +44,7 @@ namespace Api
             });
 
             builder.Services
-                .AddMassTransitWithAssemblies(builder.Configuration, catalogAssembly, basketAssembly);
+                .AddMassTransitWithAssemblies(builder.Configuration, catalogAssembly, basketAssembly, orderingAssembly);
 
             builder.Services.AddKeycloakWebApiAuthentication(builder.Configuration);
             builder.Services.AddAuthorization();

@@ -1,4 +1,5 @@
 ﻿using Basket.Data;
+using Basket.Data.Processors;
 using Basket.Data.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,8 @@ namespace Basket
                 options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
                 options.UseNpgsql(connectionString);
             });
+
+            services.AddHostedService<OutboxProcessor>();
 
             return services;
         }
