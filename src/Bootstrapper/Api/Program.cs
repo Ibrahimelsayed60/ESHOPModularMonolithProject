@@ -30,12 +30,13 @@ namespace Api
             //common services: carter, mediatr, fluentvalidation
             var catalogAssembly = typeof(CatalogModule).Assembly;
             var basketAssembly = typeof(BasketModule).Assembly;
+            var orderingAssembly = typeof(OrderingModule).Assembly;
 
             builder.Services
-                .AddCarterWithAssemblies(catalogAssembly, basketAssembly);
+                .AddCarterWithAssemblies(catalogAssembly, basketAssembly, orderingAssembly);
 
             builder.Services
-                .AddMediatRWithAssemblies(catalogAssembly, basketAssembly);
+                .AddMediatRWithAssemblies(catalogAssembly, basketAssembly, orderingAssembly);
 
             builder.Services.AddStackExchangeRedisCache(options =>
             {
@@ -48,6 +49,7 @@ namespace Api
             builder.Services.AddKeycloakWebApiAuthentication(builder.Configuration);
             builder.Services.AddAuthorization();
 
+            //module services: catalog, basket, ordering
             builder.Services
                 .AddCatalogModule(builder.Configuration)
                 .AddBasketModule(builder.Configuration)
@@ -55,6 +57,7 @@ namespace Api
 
             builder.Services
                 .AddExceptionHandler<CustomExceptionHandler>();
+
 
             var app = builder.Build();
 
