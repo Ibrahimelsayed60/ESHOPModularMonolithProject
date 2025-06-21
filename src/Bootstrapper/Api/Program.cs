@@ -1,5 +1,6 @@
 
 using Carter;
+using Keycloak.AuthServices.Authentication;
 using Serilog;
 using Shared.Exceptions.Handler;
 using Shared.Extensions;
@@ -44,6 +45,9 @@ namespace Api
             builder.Services
                 .AddMassTransitWithAssemblies(builder.Configuration, catalogAssembly, basketAssembly);
 
+            builder.Services.AddKeycloakWebApiAuthentication(builder.Configuration);
+            builder.Services.AddAuthorization();
+
             builder.Services
                 .AddCatalogModule(builder.Configuration)
                 .AddBasketModule(builder.Configuration)
@@ -61,6 +65,10 @@ namespace Api
             app.UseSerilogRequestLogging();
 
             app.UseExceptionHandler(options => { });
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
 
             app
                 .UseCatalogModule()
